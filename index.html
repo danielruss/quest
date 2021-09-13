@@ -96,7 +96,10 @@
             </script> -->
             <div class="col">
                 <h3 id="renderText" style="color: navy;">Rendering</h3>
-                <div id="rendering" ></div>
+                <div id="progressBarContainer" class="progress" style="display:none;">
+                    <div id="progressBar" class="progress-bar active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+                  </div>
+                <div id="rendering"></div>
             </div>
         </div>
     </div>
@@ -180,5 +183,34 @@
     </script>
     
     <script src="quest.js" type="module"></script>
+    <script>
+        const elementToObserve = document.querySelector("#rendering");
+        const observer = new MutationObserver(async (mutationList) => {
+            let totalChanges = 0;
+            mutationList.forEach(async (mutation) => {
+                 let nodes = new Map();
+                document.getElementById('progressBarContainer').style.display = "";
+                mutation.addedNodes.forEach((node) => {            
+                    if (node.nodeType === 1) {
+                        nodes.set(node, node.display);
+                        totalChanges++;
+                        node.style.display = "none";
+                    }
+                });
 
+                 [...nodes.keys()].forEach((node, i, arr) =>  {
+                  const percent = (i + 1) / arr.length * 100;
+                 
+                    setTimeout(() => {
+                        node.style.display = nodes.get(node) ?? ""
+                    }, i * 20);
+
+                    setTimeout(() => {                
+                    document.getElementById('progressBar').style.width = `${percent}%`;                               
+                    }, i * 20);
+                });
+            });
+        });
+        observer.observe(elementToObserve, { subtree: true, childList: true, characterData: true });
+    </script>
     </html>

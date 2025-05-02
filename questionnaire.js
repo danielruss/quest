@@ -927,7 +927,7 @@ async function nextPage(norp, retrieve, store, rootElement) {
   if (store) {
     try {
       // show a loading indicator for variables in delayedParameterArray (they take extra time to process)
-      if (moduleParams.delayedParameterArray.includes(nextElement.id)) showLoadingIndicator();
+      if (moduleParams.delayedParameterArray?.includes(nextElement.id)) showLoadingIndicator();
 
       let formData = {};
       formData[`${questName}.${questionElement.id}`] = questionElement.value;

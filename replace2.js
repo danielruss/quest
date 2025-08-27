@@ -529,6 +529,11 @@ transform.render = async (obj, divId, previousResults = {}) => {
         options = options + ` data-max="${optionObj.max}"`
       }
 
+      let elementName=questID;
+      if (optionObj.hasOwnProperty("name")) {
+        elementName=optionObj.name;
+      }
+
       // Handle not converted and not yet calculated min and max values
       const minMaxValueTest = (value) => { return value && !value.startsWith('valueOr') && !value.includes('isDefined') && value !== '0' ? value : ''; }
       // Evaluate min and max, ensuring they are valid numbers or get evaluated if they aren't.
@@ -564,7 +569,7 @@ transform.render = async (obj, divId, previousResults = {}) => {
       options += ` ${placeholder} aria-describedby="${elementId}-desc"`;
 
       //onkeypress forces whole numbers
-      return `<input type='number' aria-label='${value}' step='any' onkeypress='return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57' name='${questID}' ${options}>
+      return `<input type='number' aria-label='${value}' step='any' onkeypress='return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57' name='${elementName}' ${options}>
               <div id="${elementId}-desc" class="sr-only">${descriptionText}</div><br>`;
     }
 
@@ -793,8 +798,15 @@ transform.render = async (obj, divId, previousResults = {}) => {
   //removing random &#x1f; unit separator chars
   contents = contents.replace(//g, "");
 
+  let b5_progress_bar = `
+  <div id="b5_prog_bar" class="progress my-2">
+    <div id="b5_prog_bar_bar" class="progress-bar text-black overflow-visible" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+      <span id="b5_prog_bar_label"> 0/0 0%</span>
+    </div>
+  </div>`
+
   // add the HTML/HEAD/BODY tags...
-  document.getElementById(divId).innerHTML = contents + responseRequestedModal() + responseRequiredModal() + responseErrorModal() + submitModal();
+  document.getElementById(divId).innerHTML = b5_progress_bar + contents + responseRequestedModal() + responseRequiredModal() + responseErrorModal() + submitModal();
 
 
   function setActive(id) {

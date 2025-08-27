@@ -1,4 +1,4 @@
-import { questionQueue, nextClick, previousClicked, moduleParams, rbAndCbClick, textBoxInput, handleXOR, displayQuestion, parseSSN, parsePhoneNumber, submitQuestionnaire, textboxinput, math, radioAndCheckboxUpdate, evaluateCondition } from "./questionnaire.js";
+import { questionQueue, nextClick, previousClicked, moduleParams, rbAndCbClick, textBoxInput, handleXOR, displayQuestion, parseSSN, parsePhoneNumber, submitQuestionnaire, textboxinput, math, radioAndCheckboxUpdate, evaluateCondition, updateProgressBar } from "./questionnaire.js";
 import { restoreResults } from "./localforageDAO.js";
 import { parseGrid, grid_replace_regex } from "./buildGrid.js";
 import { clearValidationError } from "./validate.js";
@@ -820,6 +820,7 @@ transform.render = async (obj, divId, previousResults = {}) => {
         element.classList.remove("active");
       }
     );
+    updateProgressBar(id)
     // make the id active...
     console.log(`setting ${id} active`);
     displayQuestion(active);

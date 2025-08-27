@@ -1585,7 +1585,7 @@ export function evaluateCondition(txt) {
 window.evaluateCondition = evaluateCondition
 window.questionQueue = questionQueue
 
-function updateProgressBar(id){
+export function updateProgressBar(id){
   
   const ids = Array.from(document.querySelectorAll("form.question")).map( (q)=>q.id)
   if (ids.length==0) document.getElementById("b5_prog_bar").display="none"
@@ -1594,11 +1594,11 @@ function updateProgressBar(id){
   if (!ids?.length){
     return
   }
-  let indx = ids.indexOf(id);
+  let indx = ids.indexOf(id)+1;
   let progress = Math.round(indx/ids.length*1000)/10;
   document.getElementById("b5_prog_bar_label").innerText=`${indx}/${ids.length} ${progress}%`
   let pb=document.getElementById("b5_prog_bar_bar")
-  pb.style.width=`${progress}%`
+  pb.style.width=`${(progress<50)?progress+2:progress}%`
   pb.ariaValueNow=`${indx}`
   pb.ariaValueMin="1"
   pb.ariaValueMax=`${ids.length}`
